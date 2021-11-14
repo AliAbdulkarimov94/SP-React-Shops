@@ -26,10 +26,26 @@ class ShopStore {
 
   fetchShops = async () => {
     try {
-      const response = await instance.get("/products");
+      const response = await instance.get("/shops");
       this.shops = response.data;
     } catch (error) {
       console.log("ShopStore -> fetchShops -> error", error);
+    }
+  };
+
+  createProduct = async (shop, product) => {
+    try {
+      const formData = new FormData();
+      for (const key in product) {
+        formData.append(key, product[key]);
+      }
+      const res = await instance.post(`/shops/${shop._id}/products`, formData);
+      shop.products.push(res.data);
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: shopStore.js ~ line 45 ~ createProduct= ~ error",
+        error
+      );
     }
   };
 }
